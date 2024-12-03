@@ -15,6 +15,10 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+Route::middleware('auth:sanctum')->get('/validate-token', function (Request $request) {
+    return response()->json(['message' => 'Token is valid'], 200);
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
