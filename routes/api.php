@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,10 @@ Route::middleware('auth:sanctum')->get('/validate-token', function (Request $req
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::post('/product/create', [ProductController::class, 'store']);
+
+
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
