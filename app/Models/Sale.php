@@ -10,13 +10,16 @@ class Sale extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
-        'quantity',
-        'amount',
+        'total_before_discount',
+        'total_discount',
+        'final_total',
     ];
 
-    public function product()
+    /**
+     * Define a relationship with the SaleItem model.
+     */
+    public function items()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(SaleItem::class);
     }
 }
