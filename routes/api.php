@@ -17,31 +17,18 @@ use App\Http\Controllers\PosController;
 |
 */
 
-/* Route::middleware('auth:sanctum')->get('/validate-token', function (Request $request) {
-    return response()->json(['message' => 'Token is valid'], 200);
-}); */
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::post('/pos', [PosController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/product/create', [ProductController::class, 'store']);
     Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);
+    Route::get('/product/{id}', [ProductController::class, 'show']);
+    Route::put('/product/update/{id}', [ProductController::class, 'update']);
 });
-
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
-
-// Route::get('/products', [ProductController::class, 'index']);
-
-
-
-// Route::middleware('auth:sanctum')->post('/pos', [PosController::class, 'store']);
-Route::post('/pos', [PosController::class, 'store']);
-
-
-
-// Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-// Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);

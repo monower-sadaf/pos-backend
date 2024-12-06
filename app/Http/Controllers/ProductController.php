@@ -48,4 +48,16 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product deleted successfully', 'status' => true], 200);
         }
     }
+
+
+    public function show($id){
+        $product = Product::find($id);
+        return response()->json($product, 200);
+    }
+
+    public function update(Request $request, $id){
+        $product = Product::find($id);
+        $product->update($request->all());
+        return response()->json(['message' => 'Product updated successfully', 'status' => true], 200);
+    }
 }

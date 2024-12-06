@@ -13,30 +13,29 @@ class PosController extends Controller
 {
     public function store(Request $request)
     {
-        // Begin transaction to ensure everything is processed together
+
         DB::beginTransaction();
 
         try {
-            // Validate request
+
             $validated = $request->validate([
                 'items' => 'required|array',
                 'items.*.product_id' => 'required|exists:products,id',
                 'items.*.quantity' => 'required|integer|min:1',
             ]);
 
-            // Calculate totals
+
             $totalBeforeDiscount = 0;
             $totalDiscount = 0;
             $finalTotal = 0;
 
-            // Create a new sale
+
             $sale = Sale::create([
-                'total_before_discount' => 0, // Placeholder
-                'total_discount' => 0, // Placeholder
-                'final_total' => 0, // Placeholder
+                'total_before_discount' => 0,
+                'total_discount' => 0,
+                'final_total' => 0,
             ]);
 
-            // Process items and calculate totals
             foreach ($validated['items'] as $item) {
                 $product = Product::find($item['product_id']);
                 if ($product && $product->stock >= $item['quantity']) {
@@ -76,14 +75,13 @@ class PosController extends Controller
                 }
             }
 
-            // Update sale total
             $sale->update([
                 'total_before_discount' => $finalTotal + $totalDiscount,
                 'total_discount' => $totalDiscount,
                 'final_total' => $finalTotal,
             ]);
 
-            // Commit transaction
+
             DB::commit();
 
             return response()->json([
@@ -92,7 +90,7 @@ class PosController extends Controller
                 'sale' => $sale,
             ]);
         } catch (\Exception $e) {
-            DB::rollBack(); // Rollback if anything fails
+            DB::rollBack();
             return response()->json(['message' => 'Failed to process sale. Please try again.', 'status' => false, 'error' => $e->getMessage() ?? ''], 500);
         }
     }
