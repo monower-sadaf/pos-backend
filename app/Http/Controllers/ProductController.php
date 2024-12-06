@@ -29,7 +29,10 @@ class ProductController extends Controller
             return response()->json($validator->errors(), 400);
         } else {
             $product = Product::create($request->all());
-            return response()->json($product, 201);
+            return response()->json([
+                'message' => 'Product created successfully',
+                'status' => true
+            ], 201);
         }
     }
 
