@@ -20,12 +20,12 @@ use App\Http\Controllers\PosController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/pos', [PosController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/product/create', [ProductController::class, 'store']);
     Route::delete('/product/delete/{id}', [ProductController::class, 'destroy']);
